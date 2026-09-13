@@ -1,0 +1,17 @@
+# Virtual environment
+venv/
+env/
+.venv/
+
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Hugging Face cache (if downloaded locally)
+.cache/
+hf_cache/
+
+# OS artifacts
+.DS_Store
+Thumbs.db

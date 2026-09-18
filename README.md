@@ -1,27 +1,28 @@
-# DMD Zero-Shot Variant Effect Predictor
+# Protein Variant Effect Predictor (ESM-2 Zero-Shot)
 
-## Overview
-This repository implements an in-silico variant effect predictor for the human Dystrophin (*DMD*) gene using Meta's ESM-2 protein language model. By evaluating the masked marginal Log-Likelihood Ratio (LLR) between mutant and wild-type amino acids in a local structural context, the pipeline discriminates between likely benign (tolerated) and likely pathogenic (disruptive) missense mutations without requiring task-specific training data.
+[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
+[![PyTorch](https://img.shields.io/badge/PyTorch-2.0+-ee4c2c.svg)](https://pytorch.org/)
+[![HuggingFace](https://img.shields.io/badge/HuggingFace-Transformers-yellow.svg)](https://huggingface.co/)
+[![Model](https://img.shields.io/badge/Model-ESM--2%20(8M%20UR50D)-green.svg)](https://huggingface.co/facebook/esm2_t6_8M_UR50D)
+[![License: MIT](https://img.shields.io/badge/License-MIT-purple.svg)](LICENSE)
 
-## Background & Methodology
-* **Zero-Shot Masked Marginal Scoring:** The model predicts the fitness effect of a mutation by replacing the target residue with a `<mask\>` token. We extract the raw logits for the masked position and compute the LLR: `LLR = ln(P_mutant) - ln(P_wild_type)`. A negative LLR indicates a biologically unfavorable mutation that the model assigns a lower probability to compared to the naturally occurring sequence.
-* **Context Windowing (O(N²) Optimization):** The canonical Dystrophin muscle isoform (UniProt P11532) is 3,685 amino acids long, far exceeding ESM-2's 1,024-token context limit. This pipeline extracts a 101-residue local context window (±50 residues) around the mutation site. This prevents out-of-bounds tensor errors and reduces self-attention computational memory overhead by over 1,000x while preserving the immediate biochemical environment necessary for accurate prediction.
+An in-silico variant pathogenicity prediction pipeline leveraging Meta's **ESM-2 protein language model** (`esm2_t6_8M_UR50D`). Evaluates the functional impact of missense mutations in the human dystrophin (*DMD*) gene using zero-shot masked marginal log-likelihood ratio (LLR) scoring—bypassing the need for supervised training on scarce clinical labels.
 
-## Repository Structure
-* **`clean_fasta.py`**: Preprocessing script that strips metadata from raw UniProt FASTA downloads to generate a continuous, 0-indexed pure amino acid string.
-* **`predictor.py`**: The core evaluation engine. Handles bioinformatics coordinate translation (1-based to 0-based), context window slicing, tensor preparation, ESM-2 inference, and LLR thresholding.
+---
 
-## Installation
-The pipeline requires Python 3.8+ and standard deep learning dependencies.
+## Technical Highlights & Engineering Decisions
 
-```bash
-# 1. Clone the repository
-git clone [https://github.com/your-username/dmd-esm2-variant-effect.git](https://github.com/your-username/dmd-esm2-variant-effect.git)
-cd dmd-esm2-variant-effect
+* **Zero-Shot Transfer Learning:** Uses pre-trained evolutionary representations from ESM-2 to score mutations without supervised fine-tuning, avoiding overfitting on historical label bias.
+* **$O(N^2)$ Self-Attention Bottleneck Mitigation:** Dystrophin (3,685 residues) exceeds ESM-2's 1,024-token context window. Implemented an automated sliding context window ($\pm 50$ amino acids) centered on the mutation site, reducing memory overhead by over **1,000×** while preserving crucial local biochemical context.
+* **Coordinate Invariant Pipeline:** Features automated 1-based biological coordinate conversion to 0-based memory indexing, coupled with runtime reference-allele verification to guard against off-by-one errors and transcript isoform mismatches.
+* **Vectorized Probability Extraction:** Extracts raw unnormalized logits for the masked index, applies numerical log-softmax normalization via PyTorch, and computes log-odds differences in continuous log space to prevent underflow.
 
-# 2. Create and activate a virtual environment
-python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
+---
 
-# 3. Install dependencies
-pip install torch transformers
+## Methodology
+
+### Masked Marginal Log-Likelihood Ratio (LLR)
+
+For a target residue at biological position $i$, the wild-type residue $x_i$ is replaced with the special `<mask>` token. The model predicts the probability distribution over all 20 canonical amino acids conditioned on the sequence context:
+
+$$\text{LLR} = \ln P(x_i = \text{Mutant} \mid X_{\setminus i}) - \ln P(x_i = \text{Wild-Type} \mid X_{\setminus i})$$

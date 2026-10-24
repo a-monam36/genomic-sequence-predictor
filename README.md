@@ -32,14 +32,6 @@ An *in-silico* variant pathogenicity prediction engine powered by Meta AI's **ES
 - [Web Interface](#-web-interface)
 - [Technical Highlights & Engineering Decisions](#-technical-highlights--engineering-decisions)
 - [Methodology](#-methodology)
-- [Interpretation Matrix](#-interpretation-matrix)
-- [Project Architecture](#-project-architecture)
-- [Quick Start](#-quick-start)
-  - [Prerequisites](#prerequisites)
-  - [Backend Setup](#1-backend-setup)
-  - [Frontend Setup](#2-frontend-setup)
-- [License](#-license)
-
 ---
 
 ## 🔬 Overview

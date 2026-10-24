@@ -5,10 +5,8 @@
 # 🧬 Protein Variant Effect Predictor
 ### Zero-Shot Pathogenicity & Missense Mutation Profiling via ESM-2
 
-
-https://github.com/user-attachments/assets/d4dc80fd-7a3a-435c-8668-5b0081b04421
-
 [![Live Interface](https://img.shields.io/badge/Live%20Demo-Interactive%203D%20App-00f2fe?style=for-the-badge&logo=react&logoColor=black)](http://10.10.15.77:5173/)
+
 
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10+-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
 [![PyTorch 2.0+](https://img.shields.io/badge/PyTorch-2.0+-EE4C2C?style=flat-square&logo=pytorch&logoColor=white)](https://pytorch.org/)
@@ -17,6 +15,12 @@ https://github.com/user-attachments/assets/d4dc80fd-7a3a-435c-8668-5b0081b04421
 [![React](https://img.shields.io/badge/React-18-61DAFB?style=flat-square&logo=react&logoColor=black)](https://react.dev/)
 [![Three.js](https://img.shields.io/badge/Three.js-r128+-black?style=flat-square&logo=three.js&logoColor=white)](https://threejs.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-9C27B0?style=flat-square)](LICENSE)
+
+
+https://github.com/user-attachments/assets/d4dc80fd-7a3a-435c-8668-5b0081b04421
+
+
+
 
 An *in-silico* variant pathogenicity prediction engine powered by Meta AI's **ESM-2 protein language model** (`esm2_t6_8M_UR50D`). It quantifies the functional impact of missense mutations in human proteins—benchmarked against the human dystrophin (*DMD*) gene—using zero-shot masked marginal Log-Likelihood Ratio (LLR) scoring, accompanied by an interactive 3D bioluminescent sequence workspace.
 

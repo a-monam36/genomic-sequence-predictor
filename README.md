@@ -1,5 +1,12 @@
+
+
+
+
 # 🧬 Protein Variant Effect Predictor
 ### Zero-Shot Pathogenicity & Missense Mutation Profiling via ESM-2
+
+
+https://github.com/user-attachments/assets/d4dc80fd-7a3a-435c-8668-5b0081b04421
 
 [![Live Interface](https://img.shields.io/badge/Live%20Demo-Interactive%203D%20App-00f2fe?style=for-the-badge&logo=react&logoColor=black)](http://10.10.15.77:5173/)
 
@@ -79,3 +86,4 @@ Masked Extraction  :  ... [E] [K] [<mask\>] [R] [T] ...
                        └────────────┬────────────┘
                                     ▼
                       LLR = ln P(Mut) - ln P(WT)
+
